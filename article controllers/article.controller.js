@@ -1,16 +1,21 @@
  import { Article_model } from "../article model/article.model.js"
  import { Chunk_Model } from "../article model/chunk.model.js"
  import { Split_text_into_chunks } from "../article serves/chunk.serve.js"
+ import { generate_embeddings } from "../article serves/embeddings.server.js"
 
  //injestion of article
  async function Injestion_of_article(req,res) {
+  
     let {title,article}=req.body
-   //save it into the database
-   let saved_article= await Article_model.create({title,article})
-   //send the artile id and content into chunking service which divides the article into chunks
-   const list_of_chunks= await Split_text_into_chunks(saved_article.article)
-   res.json(list_of_chunks)
-   //send the chunks to embedding service will will create mebedding for the chunks
-   //send res
+    //save it into the database
+    let saved_article= await Article_model.create({title,article})
+    //send the artile id and content into chunking service which divides the article into chunks
+    const list_of_chunks= await Split_text_into_chunks(saved_article.article)
+    //send the chunks to embedding service will will create mebedding for the chunks
+    const data= await generate_embeddings(list_of_chunks)
+    let saved_chunk_data= await Chunk_Model.insertMany(data)
+    //send response
+    res.status(201).json({success:true,messgae:"injestion_of_article",data:saved_chunk_data})
+  
  }
  export {Injestion_of_article}
