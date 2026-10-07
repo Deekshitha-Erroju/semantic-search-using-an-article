@@ -50,7 +50,7 @@ I wanted to understand how modern AI-powered applications actually **retrieve us
 
 While building this project, I explored the complete idea behind a retrieval pipeline:
 
-```text
+
                 📄 DOCUMENT
                     │
                     ▼
@@ -69,6 +69,8 @@ While building this project, I explored the complete idea behind a retrieval pip
                     │
                     ▼
              💬 RELEVANT RESULT
+
+
 
 ## 🧠 What I Learned
 
